@@ -5,6 +5,11 @@ import config from '../config'
 
 
 export default class AddNote extends React.Component {
+    state = {
+        name: '',
+        content: ''
+    }
+
     static defaultProps ={
         onAddNote: () => this.props.history.push('/')
       }
@@ -24,15 +29,17 @@ export default class AddNote extends React.Component {
         const folderId = this.props.match.params.folderId
         console.log(this.props)
         // get the form fields from the event
-        const {name, content, modified, id} = e.target
+        let name = this.state.name
+        let content = this.state.content
         const noteId = this.noteID()
         const date = Date.now()
+        console.log(e.target)
         const note = {
-            id: noteId.value,
-            name: name.value,
+            id: noteId,
+            name: name,
             modified: date,
             folderId: folderId,
-            content: content.value
+            content: content
         }
         this.setState({ error: null })
 
@@ -49,13 +56,10 @@ export default class AddNote extends React.Component {
             return res.json()
           })
           .then(data => {
-            id = note.noteId
-            name = note.name
-            modified = note.modified
-            content = note.content
-            //modified = ''
-            //folderId.value = ''
+            //folderId = note.folderId
+            console.log(data)
             this.context.addNote(data)
+            this.props.history.push('/')
           })
           .catch(error => {
             this.setState({ error })
@@ -70,12 +74,16 @@ export default class AddNote extends React.Component {
             type='text'
             name='name'
             id='name'
+            value={this.state.name}
+            onChange= {(e) => this.setState({name: e.currentTarget.value})}
             required />
 
             <input 
             type='text'
             name='content'
             id='content'
+            value={this.state.content}
+            onChange= {(e) => this.setState({content: e.currentTarget.value})}
             required />
             <button>Submit</button>
         </form> 

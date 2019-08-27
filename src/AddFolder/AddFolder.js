@@ -6,6 +6,10 @@ import config from '../config'
 
 
 export default class AddFolder extends React.Component {
+    state = {
+      name: ''
+    }
+
     static defaultProps ={
         addFolder: () => {},
         history: {
@@ -26,40 +30,35 @@ export default class AddFolder extends React.Component {
         this.props.history.push('/')
       }
 
-      handleSubmit = e => {
+      handleSubmit = async (e) => {
         e.preventDefault()
         // get the form fields from the event
-        const {name} = e.target
         const id = this.folderID()
         const folder = {
           id,
-          name: name.value}
+          name: this.state.name}
         console.log(folder)
         this.setState({ error: null })
 
-        fetch(`${config.API_ENDPOINT}/folders`, {
-          method: 'POST',
-          body: JSON.stringify(folder),
-          headers: {
-            'content-type': 'application/json'
+        try {
+          const res = await fetch(`${config.API_ENDPOINT}/folders`, {
+            method: 'POST',
+            body: JSON.stringify(folder),
+            headers: {
+              'content-type': 'application/json'
+            }
+          })
+          if (!res.ok) {
+            return res.json().then(e => Promise.reject(e))
           }
-        })
-          .then(res => {
-            if (!res.ok)
-              return res.json().then(e => Promise.reject(e))
-            return res.json()
-          })
-          .then(data => {
-            id.value = ''
-            name.value =''
-            this.context.addFolder(data)
-            this.handleAddNote()
-          })
-          .catch(error => {
-            this.setState({ error })
-          })
+          const dataJson = await res.json()
+          this.context.addFolder(dataJson)
+          this.props.history.push('/')
+        
+        } catch (e) {
+          this.setState({ error: e })
+        }        
       }
-    
 
     render() {
        return(
@@ -68,6 +67,8 @@ export default class AddFolder extends React.Component {
           type='text'
           name='name'
           id='name'
+          value={this.state.name}
+          onChange={(e) => this.setState({name: e.currentTarget.value})}
           required />
           <button>Submit</button>
         </form> 

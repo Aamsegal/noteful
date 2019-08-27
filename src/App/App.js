@@ -9,6 +9,7 @@ import ApiContext from '../ApiContext';
 import config from '../config';
 import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
+import ErrorBoundry from '../ErrorBoundry/ErrorBoundry'
 import './App.css';
 
 class App extends Component {
@@ -44,15 +45,15 @@ class App extends Component {
         });
     };
 
-    handleAddFolder = () => {
+    handleAddFolder = newFolder => {
         this.setState({
-            folders: this.state.folders
+            folders: [...this.state.folders, newFolder]
         })
     }
 
-    handleAddNote = () => {
+    handleAddNote = newNote => {
         this.setState({
-            notes: this.state.notes
+            notes: [...this.state.notes, newNote]
         })
     }
 
@@ -85,7 +86,9 @@ class App extends Component {
                         component={NoteListMain}
                     />
                 ))}
-                <Route path="/note/:noteId" component={NotePageMain} />
+                <ErrorBoundry>
+                    <Route path="/note/:noteId" component={NotePageMain} />
+                </ErrorBoundry>
                 <Route path="/add-folder" component={AddFolder} />
                 <Route path="/add-note/:folderId" component={AddNote} />
             </>
@@ -96,7 +99,9 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            deleteNote: this.handleDeleteNote
+            deleteNote: this.handleDeleteNote,
+            addFolder: this.handleAddFolder,
+            addNote: this.handleAddNote
         };
         return (
             <ApiContext.Provider value={value}>
