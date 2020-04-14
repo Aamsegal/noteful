@@ -67,10 +67,11 @@ export default class AddFolder extends React.Component {
           type='text'
           name='name'
           id='name'
+          placeholder="Folder Name"
           value={this.state.name}
           onChange={(e) => this.setState({name: e.currentTarget.value})}
           required />
-          <button>Submit</button>
+          <button type='submit'>Submit</button>
         </form> 
        ) 
     }

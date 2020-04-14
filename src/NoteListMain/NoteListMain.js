@@ -17,6 +17,7 @@ export default class NoteListMain extends React.Component {
   static contextType = ApiContext
 
   render() {
+    //const { folderName } = this.props.folderName
     const { folderId } = this.props.match.params
     const { notes=[] } = this.context
     const notesForFolder = getNotesForFolder(notes, folderId)
@@ -39,6 +40,7 @@ export default class NoteListMain extends React.Component {
             tag={Link}
             to={addNoteUrl}
             type='button'
+            //nameOfFolder={folderName}
             className='NoteListMain__add-note-button'
           >
             <FontAwesomeIcon icon='plus' />

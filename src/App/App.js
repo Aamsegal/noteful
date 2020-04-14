@@ -49,6 +49,7 @@ class App extends Component {
         this.setState({
             folders: [...this.state.folders, newFolder]
         })
+        console.log(this.state.folders, "this is the folders info")
     }
 
     handleAddNote = newNote => {

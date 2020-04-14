@@ -1,8 +1,20 @@
 import React from 'react'
 import ApiContext from '../ApiContext'
+import './AddNote.css'
 import config from '../config'
 
+/*
 
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+
+*/
 
 export default class AddNote extends React.Component {
     state = {
@@ -27,13 +39,15 @@ export default class AddNote extends React.Component {
       handleSubmit = e => {
         e.preventDefault()
         const folderId = this.props.match.params.folderId
-        console.log(this.props)
+        //console.log(params)
+        //console.log(testToMatch,"This is the props.match")
+        //console.log(folderId)
+        //console.log(this.props)
         // get the form fields from the event
         let name = this.state.name
         let content = this.state.content
         const noteId = this.noteID()
         const date = Date.now()
-        console.log(e.target)
         const note = {
             id: noteId,
             name: name,
@@ -57,7 +71,7 @@ export default class AddNote extends React.Component {
           })
           .then(data => {
             //folderId = note.folderId
-            console.log(data)
+            //console.log(data)
             this.context.addNote(data)
             this.props.history.push('/')
           })
@@ -68,12 +82,18 @@ export default class AddNote extends React.Component {
     
 
     render() {
+      const folderId = this.props.match.params.folderId
+      const folderName = this.context.folders.filter(item => item.id === folderId)[0].name
+      console.log(folderName)
        return(
-        <form onSubmit = {this.handleSubmit}>
+        <div>
+          <h1>Add a note to "{folderName}" folder</h1>
+          <form onSubmit = {this.handleSubmit}>
             <input 
             type='text'
             name='name'
             id='name'
+            placeholder="Name of note"
             value={this.state.name}
             onChange= {(e) => this.setState({name: e.currentTarget.value})}
             required />
@@ -82,11 +102,14 @@ export default class AddNote extends React.Component {
             type='text'
             name='content'
             id='content'
+            placeholder='Note content'
             value={this.state.content}
             onChange= {(e) => this.setState({content: e.currentTarget.value})}
             required />
             <button>Submit</button>
         </form> 
+        </div>
+        
        ) 
     }
 }
