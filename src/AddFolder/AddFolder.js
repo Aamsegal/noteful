@@ -63,6 +63,7 @@ export default class AddFolder extends React.Component {
     render() {
        return(
         <form onSubmit = {this.handleSubmit}>
+          <label for = "name">Folder Name</label>
           <input 
           type='text'
           name='name'
