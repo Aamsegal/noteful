@@ -3,23 +3,11 @@ import ApiContext from '../ApiContext'
 import './AddNote.css'
 import config from '../config'
 
-/*
-
-Comment
-Comment
-Comment
-Comment
-Comment
-Comment
-Comment
-Comment
-
-*/
-
 export default class AddNote extends React.Component {
     state = {
         name: '',
-        content: ''
+        content: '',
+        folderId: '',
     }
 
     static defaultProps ={
@@ -38,12 +26,9 @@ export default class AddNote extends React.Component {
 
       handleSubmit = e => {
         e.preventDefault()
-        const folderId = this.props.match.params.folderId
-        //console.log(params)
-        //console.log(testToMatch,"This is the props.match")
+        const folderId = document.getElementById("folderSelection").value;
         //console.log(folderId)
         //console.log(this.props)
-        // get the form fields from the event
         let name = this.state.name
         let content = this.state.content
         const noteId = this.noteID()
@@ -79,16 +64,30 @@ export default class AddNote extends React.Component {
             this.setState({ error })
           })
       }
+
+      selectFormOnChangeTest() {
+        console.log('hello?')
+      }
     
 
     render() {
-      const folderId = this.props.match.params.folderId
-      const folderName = this.context.folders.filter(item => item.id === folderId)[0].name
-      console.log(folderName)
+      const folderInfo = this.context.folders;
+      //const folderId = this.props.match.params.folderId
+      //const folderName = this.context.folders.filter(item => item.id === folderId)[0].name
+      //console.log(folderName)
        return(
         <div>
-          <h1>Add a note to "{folderName}" folder</h1>
           <form onSubmit = {this.handleSubmit}>
+            <label for="folderSelection">Select a Folder</label>
+            <select name="folderSelection" id="folderSelection">
+              {folderInfo.map(folder =>
+                <option 
+                value={folder.id}              
+                >{folder.name}</option>
+                )}
+            </select>
+
+            <label for="name">Note name</label>
             <input 
             type='text'
             name='name'
@@ -98,6 +97,7 @@ export default class AddNote extends React.Component {
             onChange= {(e) => this.setState({name: e.currentTarget.value})}
             required />
 
+            <label for="content">Content</label>
             <input 
             type='text'
             name='content'
