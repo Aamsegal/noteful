@@ -72,8 +72,8 @@ export default class AddNote extends React.Component {
 
     render() {
       const folderInfo = this.context.folders;
-      //const folderId = this.props.match.params.folderId
-      //const folderName = this.context.folders.filter(item => item.id === folderId)[0].name
+      //const folderInfo = this.props.match.params.folderId
+      //const folderName = this.context.folders.filter(item => item.id === folderInfo)[0].name
       //console.log(folderName)
        return(
         <div>
