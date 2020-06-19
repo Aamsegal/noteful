@@ -16,17 +16,18 @@ export default class Note extends React.Component {
     e.preventDefault()
     const noteId = this.props.id
 
-    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
+    fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'
       },
     })
-      .then(res => {
+      /*.then(res => {
         if (!res.ok)
           return res.json().then(e => Promise.reject(e))
         return res.json()
-      })
+      })    The code above causes an error and prevents the function fron running
+      this preventing the render from updating*/
       .then(() => {
         this.context.deleteNote(noteId)
         // allow parent to perform extra behaviour
@@ -38,7 +39,7 @@ export default class Note extends React.Component {
   }
 
   render() {
-    const { name, id, modified } = this.props
+    const { name, id, modified, note_contents } = this.props
     return (
       <div className='Note'>
         <h2 className='Note__title'>
@@ -60,7 +61,7 @@ export default class Note extends React.Component {
             Modified
             {' '}
             <span className='Date'>
-              {format(modified, 'Do MMM YYYY')}
+              {modified}
             </span>
           </div>
         </div>

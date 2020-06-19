@@ -36,12 +36,11 @@ export default class AddFolder extends React.Component {
         const id = this.folderID()
         const folder = {
           id,
-          name: this.state.name}
-        console.log(folder)
+          title: this.state.name}
         this.setState({ error: null })
 
         try {
-          const res = await fetch(`${config.API_ENDPOINT}/folders`, {
+          const res = await fetch(`${config.API_ENDPOINT}/api/folders`, {
             method: 'POST',
             body: JSON.stringify(folder),
             headers: {

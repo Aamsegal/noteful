@@ -5,7 +5,7 @@ import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
 import { getNotesForFolder } from '../notes-helpers'
-import AddFolder from '../AddFolder/AddFolder'
+//import AddFolder from '../AddFolder/AddFolder'
 import './NoteListMain.css'
 
 export default class NoteListMain extends React.Component {
@@ -29,8 +29,9 @@ export default class NoteListMain extends React.Component {
             <li key={note.id}>
               <Note
                 id={note.id}
-                name={note.name}
-                modified={note.modified}
+                name={note.title}
+                modified={note.date_created}
+                note_contents={note.note_contents}
               />
             </li>
           )}
@@ -40,7 +41,6 @@ export default class NoteListMain extends React.Component {
             tag={Link}
             to={addNoteUrl}
             type='button'
-            //nameOfFolder={folderName}
             className='NoteListMain__add-note-button'
           >
             <FontAwesomeIcon icon='plus' />

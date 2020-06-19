@@ -17,11 +17,12 @@ class App extends Component {
         notes: [],
         folders: []
     };
-
+    //  Because I store the data in the app after the pull, I can delete it from the app
+    //and the database at the same time
     componentDidMount() {
         Promise.all([
-            fetch(`${config.API_ENDPOINT}/notes`),
-            fetch(`${config.API_ENDPOINT}/folders`)
+            fetch(`${config.API_ENDPOINT}/api/notes`),
+            fetch(`${config.API_ENDPOINT}/api/folders`)
         ])
             .then(([notesRes, foldersRes]) => {
                 if (!notesRes.ok)
@@ -33,6 +34,7 @@ class App extends Component {
             })
             .then(([notes, folders]) => {
                 this.setState({notes, folders});
+                
             })
             .catch(error => {
                 console.error({error});
@@ -41,7 +43,7 @@ class App extends Component {
 
     handleDeleteNote = noteId => {
         this.setState({
-            notes: this.state.notes.filter(note => note.id !== noteId)
+            notes: this.state.notes.filter(note => note.id !== parseInt(noteId))
         });
     };
 
@@ -49,7 +51,6 @@ class App extends Component {
         this.setState({
             folders: [...this.state.folders, newFolder]
         })
-        console.log(this.state.folders, "this is the folders info")
     }
 
     handleAddNote = newNote => {

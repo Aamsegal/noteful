@@ -29,20 +29,20 @@ export default class AddNote extends React.Component {
         const folderId = document.getElementById("folderSelection").value;
         //console.log(folderId)
         //console.log(this.props)
-        let name = this.state.name
+        let title = this.state.name
         let content = this.state.content
         const noteId = this.noteID()
         const date = Date.now()
         const note = {
             id: noteId,
-            name: name,
+            title: title,
             modified: date,
-            folderId: folderId,
-            content: content
+            folder_id: folderId,
+            note_contents: content
         }
         this.setState({ error: null })
 
-        fetch(`${config.API_ENDPOINT}/notes`, {
+        fetch(`${config.API_ENDPOINT}/api/notes`, {
           method: 'POST',
           body: JSON.stringify(note),
           headers: {
@@ -71,7 +71,7 @@ export default class AddNote extends React.Component {
     
 
     render() {
-      const folderInfo = this.context.folders;
+      const { folders } = this.context;
       //const folderInfo = this.props.match.params.folderId
       //const folderName = this.context.folders.filter(item => item.id === folderInfo)[0].name
       //console.log(folderName)
@@ -80,10 +80,11 @@ export default class AddNote extends React.Component {
           <form onSubmit = {this.handleSubmit}>
             <label for="folderSelection">Select a Folder</label>
             <select name="folderSelection" id="folderSelection">
-              {folderInfo.map(folder =>
+              {folders.map(folder =>
                 <option 
-                value={folder.id}              
-                >{folder.name}</option>
+                value={folder.id}
+                //onChange= {(e) => this.setState({folderId: e.currentTarget.value})}              
+                >{folder.title}</option>
                 )}
             </select>
 
